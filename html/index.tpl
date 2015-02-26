@@ -17,7 +17,7 @@ been loaded <b>%counter%</b> times.
 </p>
 
 <p>We can upload pictures into esp8266 as well.<br />
-<img src="cats/cross-eyed-cat.jpg"><br />
+<img src="cats/junge-katze-iv.jpg"><br />
 </p>
 </div>
 </body></html>
