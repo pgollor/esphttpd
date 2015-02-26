@@ -6,3 +6,4 @@ webpages.espfs
 espfstest/*.o
 espfstest/espfstest
 Makefile.uservars
+*~
