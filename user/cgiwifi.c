@@ -302,19 +302,6 @@ void ICACHE_FLASH_ATTR tplWlan(HttpdConnData *connData, char *token, void **arg)
 	{
 		os_strcpy(buff, (char*)stconf.password);
 	}
-	else if (os_strcmp(token, "WiFiapwarn") == 0)
-	{
-		x = wifi_get_opmode();
-
-		if (x == SOFTAP_MODE)
-		{
-			os_strcpy(buff, "<b>Can't scan in this mode.</b> Click <a href=\"setmode.cgi?mode=3\">here</a> to go to STA+AP mode.");
-		}
-		else
-		{
-			os_strcpy(buff, "Click <a href=\"setmode.cgi?mode=2\">here</a> to go to standalone AP mode.");
-		}
-	}
 
 	httpdSend(connData, buff, -1);
 }

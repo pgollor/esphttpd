@@ -95,4 +95,8 @@ void user_init(void) {
 
 	// output to uart
 	os_printf("\nReady fo evertything on port 80.\n");
+
+#ifdef DEBUG_SOFTAP
+	print_wifi_softap_info();
+#endif
 }
