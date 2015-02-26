@@ -11,19 +11,27 @@
 BUILD_BASE	= build
 FW_BASE		= firmware
 
+#include user defined variables
+include Makefile.uservars
+
+
 # Base directory for the compiler. Needs a / at the end; if not set it'll use the tools that are in
 # the PATH.
-XTENSA_TOOLS_ROOT ?= 
+XTENSA_TOOLS_ROOT ?= $(ESPRESSIF_ROOT)/esp-open-sdk/xtensa-lx106-elf/bin/
 
 # base directory of the ESP8266 SDK package, absolute
-SDK_BASE	?= /opt/Espressif/ESP8266_SDK
+SDK_BASE	?= $(ESPRESSIF_ROOT)/esp-open-sdk/sdk
 
-#Esptool.py path and port
-ESPTOOL		?= esptool
+#Esptool.py path, port and baudrate
+ESPTOOL_PY		?= $(ESPRESSIF_ROOT)/esp-open-sdk/esptool/esptool.py
 ESPPORT		?= /dev/ttyUSB0
-#ESPDELAY indicates seconds to wait between flashing the two binary images
-ESPDELAY	?= 3
 ESPBAUD		?= 115200
+
+# esptool debian package
+ESPTOOL		?= esptool # have to be in system or user path
+
+#ESPDELAY indicates seconds to wait between flashing the two binary images
+ESPDELAY	?= 1
 
 # name for the target project
 TARGET		= httpd
@@ -138,10 +146,10 @@ firmware:
 	$(Q) mkdir -p $@
 
 flash: $(FW_FILE_1) $(FW_FILE_2)
-	$(Q) $(ESPTOOL) -cp $(ESPPORT) -cb $(ESPBAUD) -ca 0x00000 -cf firmware/0x00000.bin -v
+	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x00000 firmware/0x00000.bin
 	$(Q) [ $(ESPDELAY) -ne 0 ] && echo "Please put the ESP in bootloader mode..." || true
 	$(Q) sleep $(ESPDELAY) || true
-	$(Q) $(ESPTOOL) -cp $(ESPPORT) -cb $(ESPBAUD) -ca 0x40000 -cf firmware/0x40000.bin -v
+	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x40000 firmware/0x40000.bin
 
 webpages.espfs: html/ html/wifi/ mkespfsimage/mkespfsimage
 	cd html; find | ../mkespfsimage/mkespfsimage > ../webpages.espfs; cd ..
@@ -151,7 +159,8 @@ mkespfsimage/mkespfsimage: mkespfsimage/
 
 htmlflash: webpages.espfs
 	if [ $$(stat -c '%s' webpages.espfs) -gt $$(( 0x2E000 )) ]; then echo "webpages.espfs too big!"; false; fi
-	$(ESPTOOL) -cp $(ESPPORT) -cb $(ESPBAUD) -ca 0x12000 -cf webpages.espfs -v
+	$(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x12000 webpages.espfs
+
 
 clean:
 	$(Q) rm -f $(APP_AR)
