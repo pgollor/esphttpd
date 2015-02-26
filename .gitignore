@@ -7,3 +7,6 @@ espfstest/*.o
 espfstest/espfstest
 Makefile.uservars
 *~
+.cproject
+.project
+.settings
