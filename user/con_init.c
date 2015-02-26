@@ -17,7 +17,7 @@
 void wifi_init(void)
 {
 	struct softap_config config;
-	//struct dhcps_lease lease;
+	struct dhcps_lease lease;
 #if defined(SOFTAP_SSID) || defined(SOFTAP_ENCRYPT)
 	char buff[33];
 #endif
@@ -69,9 +69,9 @@ void wifi_init(void)
 	 * @{
 	 */
 	// set ip range
-	//lease.start_ip = 100;
-	//lease.stop_ip = 110;
-	//wifi_softap_set_dhcps_lease(&lease);
+	lease.start_ip = 100;
+	lease.end_ip = 110;
+	wifi_softap_set_dhcps_lease(&lease);
 
 	// start server
 	//wifi_softap_dhcps_start();
