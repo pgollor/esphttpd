@@ -7,10 +7,19 @@ The original software comes from:
 - http://git.spritesserver.nl/esphttpd.git/
 
 
-Makefile
-========
+Erstellen
+=========
+
+# Makefile
 In der Makefile wird die Variable "ESPRESSIF_ROOT" verwendet die man in der Datei "Makefile.uservars" anlegen sollte. Dort ist der Pfad anzugeben in dem das esp-open-sdk liegt.
-Weitere Informationen dazu gibt esi nmeiner sdk Installationshilfe.
+<br>Weitere Informationen dazu gibt es in meiner sdk Installationshilfe.
+
+# vor dem make
+Es ist ganz wichtig vor dem make im Hauptverzeichnis des Projekts folgende git befehle aus zu fuehren:
+<br>git submodule init
+<br>git submodule update
+<br><br>Damit wird sichergestellt, dass alle submodule auch geladen werden.
+
 
 
 LICENSE
