@@ -1,0 +1,2 @@
+Dieses Material steht unter der Creative-Commons-Lizenz Namensnennung 4.0 International. Um eine Kopie dieser Lizenz zu sehen, besuchen Sie http://creativecommons.org/licenses/by/4.0/.
+cc-by Pascal Gollor (http://www.pgollor.de)
