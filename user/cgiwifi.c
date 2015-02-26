@@ -1,14 +1,19 @@
-/*
-Cgi/template routines for the /wifi url.
-*/
-
-/*
+/**
+ * @file cgiwifi.c
+ *
+ * @author: Jeroen Domburg <jeroen@spritesmods.com>
+ * @author: Pascal Gollor (http://www.pgollor.de/cms/)
+ *
+ * original from:
+ * http://www.esp8266.com/viewtopic.php?f=6&t=376 ( http://git.spritesserver.nl/esphttpd.git/ )
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
  * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain 
  * this notice you can do whatever you want with this stuff. If we meet some day, 
  * and you think this stuff is worth it, you can buy me a beer in return. 
  * ----------------------------------------------------------------------------
+ *
+ * @brief Cgi/template routines for the /wifi url.
  */
 
 
@@ -182,7 +187,8 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 	char passwd[128];
 	static ETSTimer reassTimer;
 	
-	if (connData->conn==NULL) {
+	if (connData->conn==NULL)
+	{
 		//Connection aborted. Clean up.
 		return HTTPD_CGI_DONE;
 	}
@@ -207,55 +213,109 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 	return HTTPD_CGI_DONE;
 }
 
+
 //This cgi uses the routines above to connect to a specific access point with the
 //given ESSID using the given password.
-int ICACHE_FLASH_ATTR cgiWifiSetMode(HttpdConnData *connData) {
+int ICACHE_FLASH_ATTR cgiWifiSetMode(HttpdConnData *connData)
+{
 	int len;
 	char buff[1024];
 	
-	if (connData->conn==NULL) {
+	if (connData->conn == NULL)
+	{
 		//Connection aborted. Clean up.
 		return HTTPD_CGI_DONE;
 	}
 
-	len=httpdFindArg(connData->getArgs, "mode", buff, sizeof(buff));
-	if (len!=0) {
+	// find GET argument "mode" and store info buff
+	len = httpdFindArg(connData->getArgs, "mode", buff, sizeof(buff));
+
+	if (len != 0)
+	{
 		os_printf("cgiWifiSetMode: %s\n", buff);
 #ifndef DEMO_MODE
 		wifi_set_opmode(atoi(buff));
 		system_restart();
 #endif
 	}
+
 	httpdRedirect(connData, "/wifi");
+
 	return HTTPD_CGI_DONE;
 }
 
-//Template code for the WLAN page.
-void ICACHE_FLASH_ATTR tplWlan(HttpdConnData *connData, char *token, void **arg) {
+
+/**
+ * @brief Template code for the WLAN page.
+ * @param connData: 
+ * @param token: 
+ * @param arg:
+ * 
+ * generate code for Template variables
+ */
+void ICACHE_FLASH_ATTR tplWlan(HttpdConnData *connData, char *token, void **arg)
+{
 	char buff[1024];
 	int x;
 	static struct station_config stconf;
-	if (token==NULL) return;
+
+	if (token == NULL)
+	{
+		return;
+	}
 	wifi_station_get_config(&stconf);
 
 	os_strcpy(buff, "Unknown");
-	if (os_strcmp(token, "WiFiMode")==0) {
-		x=wifi_get_opmode();
-		if (x==1) os_strcpy(buff, "Client");
-		if (x==2) os_strcpy(buff, "SoftAP");
-		if (x==3) os_strcpy(buff, "STA+AP");
-	} else if (os_strcmp(token, "currSsid")==0) {
+
+	/** 
+	 * @brief generate variables
+	 *
+	 * WifiMode: esp8266 wifi mode:
+	 * 1: client
+	 * 2: software access point
+	 * 3: both at the same time
+	 *
+	 * currSsid: current ssid
+	 */
+	if (os_strcmp(token, "WiFiMode") == 0)
+	{
+		x = wifi_get_opmode();
+
+		if (x == STATION_MODE)
+		{
+			os_strcpy(buff, "Client");
+		}
+		else if (x == SOFTAP_MODE)
+		{
+			os_strcpy(buff, "SoftAP");
+		}
+		else if (x == STATIONAP_MODE)
+		{
+			os_strcpy(buff, "STA+AP");
+		}
+	}
+	else if (os_strcmp(token, "currSsid") == 0)
+	{
 		os_strcpy(buff, (char*)stconf.ssid);
-	} else if (os_strcmp(token, "WiFiPasswd")==0) {
+	}
+	else if (os_strcmp(token, "WiFiPasswd") == 0)
+	{
 		os_strcpy(buff, (char*)stconf.password);
-	} else if (os_strcmp(token, "WiFiapwarn")==0) {
-		x=wifi_get_opmode();
-		if (x==2) {
+	}
+	else if (os_strcmp(token, "WiFiapwarn") == 0)
+	{
+		x = wifi_get_opmode();
+
+		if (x == SOFTAP_MODE)
+		{
 			os_strcpy(buff, "<b>Can't scan in this mode.</b> Click <a href=\"setmode.cgi?mode=3\">here</a> to go to STA+AP mode.");
-		} else {
+		}
+		else
+		{
 			os_strcpy(buff, "Click <a href=\"setmode.cgi?mode=2\">here</a> to go to standalone AP mode.");
 		}
 	}
+
 	httpdSend(connData, buff, -1);
 }
 

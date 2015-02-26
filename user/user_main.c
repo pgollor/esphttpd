@@ -1,6 +1,11 @@
-
-
-/*
+/**
+ * @file user_main.c
+ *
+ * @author: Jeroen Domburg <jeroen@spritesmods.com>
+ * @author: Pascal Gollor (http://www.pgollor.de/cms/)
+ * 
+ * original from:
+ * http://www.esp8266.com/viewtopic.php?f=6&t=376 ( http://git.spritesserver.nl/esphttpd.git/ )
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
  * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain 
@@ -20,6 +25,8 @@
 #include "cgiwifi.h"
 #include "stdout.h"
 #include "auth.h"
+#include "con_init.h"
+
 
 //Function that tells the authentication system what users/passwords live on the system.
 //This is disabled in the default build; if you want to try it, enable the authBasic line in
@@ -73,10 +80,19 @@ HttpdBuiltInUrl builtInUrls[]={
 };
 
 
-//Main routine. Initialize stdout, the I/O and the webserver and we're done.
+/**
+ * @brief Main routine. Initialize stdout, the I/O and the webserver and we're done.
+ */
 void user_init(void) {
 	stdoutInit();
 	ioInit();
+
+	// init wifi connection
+	wifi_init();
+	
+	// init connection for tcp port 80
 	httpdInit(builtInUrls, 80);
-	os_printf("\nReady\n");
+
+	// output to uart
+	os_printf("\nReady fo evertything on port 80.\n");
 }
