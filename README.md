@@ -37,14 +37,15 @@ Zum flashen benutze ich ein FTDI Chip der zwei Vorteile gegenüber anderen USB z
 Der andere Vorteil ist, dass neben den Datenleitungen noch andere zur Verfügung stehen die genutzt werden können um GPIO2 und CH_PD zu beschalten. Dies wird vom exptool.py direkt unterstützt und somit muss man beim flashen nicht immer Jumper setzen um den Chip in den Boot Modus [4] zu versetzen.
 <br>
 Dazu muss der esp8266 wie unten stehend mit dem FTDI verbunden werden:<br>
------------<br>
-|         |<br>
-|         |<br>
-|         |<br>
-|         |<br>
-| 1 3 5 7 |<br>
-| 2 4 6 8 |<br>
------------<br>
+<pre>
+-----------
+|         |
+|         |
+|         |
+|         |
+| 1 3 5 7 |
+| 2 4 6 8 |
+-----------</pre>
 Ansicht von oben<br>
 <br>
 - 1: GND
