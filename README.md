@@ -48,21 +48,21 @@ Dazu muss der esp8266 wie unten stehend mit dem FTDI verbunden werden:<br>
 | 2 4 6 8 |
 -----------
 Ansicht von oben
-
+</pre><pre>
 1: GND
 2: TXD
 3: GPIO2
-4: CH_PD (muss im Betrieb auv Vcc liegen)
+4: CH_PD (muss im Betrieb auf Vcc liegen)
 5: GPIO0
 6: RST
 7: RXD
 8: VCC
 
 Booloader Mode:
-- CH_PD - RTS
-- GPIO0 – DTR
-</pre><br>
-
+CH_PD - RTS
+GPIO0 - DTR
+</pre>
+<br>
 Wenn das follendet ist, kann der code wie folgt übertragen werden:
 - make flash : überträgt den code
 - make htmlflash : überträgt die Dateien für den Webserver. Dies ist aber nur nötig, wenn man in den html Files etwas ändert.
