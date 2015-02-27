@@ -7,7 +7,7 @@ Ich habe die esphttpd software [3] als Grundlage für mein Projekt benutzt. Nach
 
 
 SDK Erstellen
-=========
+=============
 
 Die Anleitung habe ich mit der Ubuntu Version 14.04 getestet.
 
@@ -16,15 +16,16 @@ Bevor wir das SDK herunter laden und installieren sollten die Pakete aus Link [2
 
 # SDK
 Zum erstellen des Codes für den esp8266 benötigen wir ein SDK. Ich nutze das esp-open-sdk [1], weil es dort ein Makefile zum erstellen gibt, das einem die Einzelschritte aus dem esp8266 wiki [2] teilweise abnimmt.<br>
-Daher das SDK [1] einfach herunterladen (z.B. nach /usr/local/). Anschließend wird in das Verzeichnis gewechselt, alles aktualisiert und compiliert mit.
+Daher das SDK [1] einfach herunterladen (z.B. nach /usr/local/). Anschließend wird in das Verzeichnis gewechselt, alles aktualisiert und compiliert mit:
+<pre>make</pre>
 
 
 Esphttpd Erstellen
-=============
+==================
 
 Nach dem clonen sollte im repository noch folgendes ausgeführt werden:
-- git submodule init
-- git submodule update
+<pre>git submodule init
+git submodule update</pre>
 <br>Damit wird sichergestellt, dass alle submodule auch geladen werden.
 
 # Makefile
@@ -45,22 +46,23 @@ Dazu muss der esp8266 wie unten stehend mit dem FTDI verbunden werden:<br>
 |         |
 | 1 3 5 7 |
 | 2 4 6 8 |
------------</pre>
-Ansicht von oben<br>
-<br>
-- 1: GND
-- 2: TXD
-- 3: GPIO2
-- 4: CH_PD (muss im Betrieb auv Vcc liegen)
-- 5: GPIO0
-- 6: RST
-- 7: RXD
-- 8: VCC
-<br>
+-----------
+Ansicht von oben
+
+1: GND
+2: TXD
+3: GPIO2
+4: CH_PD (muss im Betrieb auv Vcc liegen)
+5: GPIO0
+6: RST
+7: RXD
+8: VCC
+
 Booloader Mode:
 - CH_PD - RTS
 - GPIO0 – DTR
-<br><br>
+</pre><br>
+
 Wenn das follendet ist, kann der code wie folgt übertragen werden:
 - make flash : überträgt den code
 - make htmlflash : überträgt die Dateien für den Webserver. Dies ist aber nur nötig, wenn man in den html Files etwas ändert.
