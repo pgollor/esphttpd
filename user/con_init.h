@@ -15,10 +15,13 @@
 
 #include "user_config.h"
 
+#include <c_types.h>
+
+
 //functions
-void wifi_init(void);
+void ICACHE_FLASH_ATTR wifi_init(void);
 #ifdef DEBUG_SOFTAP
-	void print_wifi_softap_info(void);
+	void ICACHE_FLASH_ATTR print_wifi_softap_info(void);
 #endif
 
 

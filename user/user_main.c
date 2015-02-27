@@ -84,12 +84,15 @@ HttpdBuiltInUrl builtInUrls[]={
  * @brief Main routine. Initialize stdout, the I/O and the webserver and we're done.
  */
 void user_init(void) {
+	// init uart as stdout
 	stdoutInit();
-	ioInit();
 
 	// init wifi connection
 	wifi_init();
 	
+	// init GPIO
+	ioInit();
+
 	// init connection for tcp port 80
 	httpdInit(builtInUrls, 80);
 
