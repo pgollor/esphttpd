@@ -32,7 +32,7 @@ git submodule update</pre>
 In der Makefile wird die Variable "ESPRESSIF_ROOT" (bei mir „/usr/local“) verwendet die man in der Datei "Makefile.uservars" anlegen muss. Dort ist der Pfad anzugeben in dem das esp-open-sdk liegt.
 <br>
 Anschließend kann das Programm mit
-<pr>make</pre>
+<pre>make</pre>
 compiliert werden.
 
 # flashen
