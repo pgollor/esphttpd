@@ -19,11 +19,14 @@
 #include "ets_sys.h"
 #include "osapi.h"
 #include "httpd.h"
-#include "io.h"
+#ifdef USE_IO
+	#include "io.h"
+#endif
 #include "httpdespfs.h"
 #include "cgi.h"
 #include "cgiwifi.h"
-#include "stdout.h"
+//#include "stdout.h"
+#include <uart.h>
 #include "auth.h"
 #include "con_init.h"
 
@@ -84,12 +87,18 @@ HttpdBuiltInUrl builtInUrls[]={
  * @brief Main routine. Initialize stdout, the I/O and the webserver and we're done.
  */
 void user_init(void) {
-	stdoutInit();
-	ioInit();
+	// init uart
+	//stdoutInit(); // do not use primitve uart output
+	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 
 	// init wifi connection
 	wifi_init();
 	
+	// init GPIO
+#ifdef USE_IO
+	ioInit();
+#endif
+
 	// init connection for tcp port 80
 	httpdInit(builtInUrls, 80);
 

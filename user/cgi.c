@@ -23,46 +23,86 @@ flash as a binary. Also handles the hit counter on the main page.
 #include <ip_addr.h>
 #include "espmissingincludes.h"
 
+#include "user_config.h"
+
 
 //cause I can't be bothered to write an ioGetLed()
 static char currLedState=0;
 
-//Cgi that turns the LED on or off according to the 'led' param in the POST data
-int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData) {
+
+/**
+ * @brief Cgi that turns the LED on or off according to the 'led' param in the POST data
+ */
+int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData)
+{
+#ifdef USE_IO
 	int len;
 	char buff[1024];
-	
-	if (connData->conn==NULL) {
+
+	if (connData->conn==NULL)
+	{
 		//Connection aborted. Clean up.
 		return HTTPD_CGI_DONE;
 	}
 
-	len=httpdFindArg(connData->postBuff, "led", buff, sizeof(buff));
-	if (len!=0) {
-		currLedState=atoi(buff);
-		ioLed(currLedState);
+	len = httpdFindArg(connData->postBuff, "led", buff, sizeof(buff));
+	if (len!=0)
+	{
+		currLedState = atoi(buff);
+		ioLed(currLedState); // set led state
 	}
+#endif
 
 	httpdRedirect(connData, "led.tpl");
 	return HTTPD_CGI_DONE;
 }
 
 
+/**
+ * @brief Template code for the led page.
+ * @param connData: HttpdConnData struct
+ * @param token: token from tpl file
+ * @param arg:
+ *
+ * handle %ledstate" from led.tpl
+ */
+void ICACHE_FLASH_ATTR tplLed(HttpdConnData *connData, char *token, void **arg)
+{
+#ifdef USE_IO
+	char buff[8];
+	uint8 len = 0;
+#endif
 
-//Template code for the led page.
-void ICACHE_FLASH_ATTR tplLed(HttpdConnData *connData, char *token, void **arg) {
-	char buff[128];
-	if (token==NULL) return;
+	if (token == NULL)
+	{
+		return;
+	}
 
+#ifdef USE_IO
+	// default state is unknown
 	os_strcpy(buff, "Unknown");
-	if (os_strcmp(token, "ledstate")==0) {
-		if (currLedState) {
+	len = 8;
+
+	if (os_strcmp(token, "ledstate")==0)
+	{
+		if (currLedState)
+		{
 			os_strcpy(buff, "on");
-		} else {
+			len = 3;
+		}
+		else
+		{
 			os_strcpy(buff, "off");
+			len = 4;
 		}
 	}
-	httpdSend(connData, buff, -1);
+
+	// send led state to httpd
+	//httpdSend(connData, buff, -1);
+	httpdSend(connData, buff, len);
+#else
+	httpdSend(connData, "Unknown", 8);
+#endif
 }
 
 static long hitCounter=0;

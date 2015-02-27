@@ -71,14 +71,18 @@ window.onload=function(e) {
 	scanAPs();
 };
 </script>
+
 </head>
 <body>
 <div id="main">
+<p>Current WiFi mode: %WiFiMode%</p>
 <p>
-Current WiFi mode: %WiFiMode%
-</p>
-<p>
-Note: %WiFiapwarn%
+Change wifi mode to:
+<ul>
+	<li><a href="setmode.cgi?mode=1">Client</a></li>
+	<li><a href="setmode.cgi?mode=2">softAP</a></li>
+	<li><a href="setmode.cgi?mode=3">STA+AP</a></li>
+</ul>
 </p>
 <form name="wifiform" action="connect.cgi" method="post">
 <p>
