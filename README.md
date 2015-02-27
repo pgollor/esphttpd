@@ -44,7 +44,7 @@ compiliert werden.<br>
 flashen
 -------
 Zum flashen benutze ich ein FTDI Chip der zwei Vorteile gegenüber anderen USB zu UART Adapter besitzt. Der erste ist, dass die UART Seite des FTDI auch mir 3,3V laufen kann und somit kein Pegelwandler benötigt wird.<br>
-Der andere Vorteil ist, dass neben den Datenleitungen noch andere zur Verfügung stehen die genutzt werden können um GPIO2 und CH_PD zu beschalten. Dies wird vom exptool.py direkt unterstützt und somit muss man beim flashen nicht immer Jumper setzen um den Chip in den Boot Modus [4](https://github.com/esp8266/esp8266-wiki/wiki/Uploading) zu versetzen.
+Der andere Vorteil ist, dass neben den Datenleitungen noch andere zur Verfügung stehen die genutzt werden können um GPIO0 und CH_PD zu beschalten. Dies wird vom exptool.py direkt unterstützt und somit muss man beim flashen nicht immer Jumper setzen um den Chip in den Boot Modus [4](https://github.com/esp8266/esp8266-wiki/wiki/Uploading) zu versetzen.
 <br>
 Dazu muss der esp8266 wie unten stehend mit dem FTDI verbunden werden:<br>
 
