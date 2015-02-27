@@ -5,10 +5,10 @@
  * @author Pascal Gollor
  */
 
-#ifndef USER_UART_RX_HANDLE_C_
-#define USER_UART_RX_HANDLE_C_
-
 #include "uart_rx_handle.h"
+#include "user_config.h"
+#include "osapi.h"
+
 
 // variables
 char _uart_rx_buffer[RX_BUFF_SIZE];
@@ -16,8 +16,10 @@ char _uart_rx_buffer[RX_BUFF_SIZE];
 
 void uart_rx_handle(RcvMsgBuff *rxBuff)
 {
-
+	// debugging code
+	for (; rxBuff->pReadPos < rxBuff->pWritePos; rxBuff->pReadPos++)
+	{
+		os_printf("%c", *(rxBuff->pReadPos));
+	}
+	os_printf(PRINTF_LINEENDING);
 }
-
-
-#endif /* USER_UART_RX_HANDLE_C_ */
