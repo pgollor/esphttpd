@@ -13,16 +13,13 @@
 #ifndef __CON_INIT_H__
 #define __CON_INIT_H__
 
-#include "user_config.h"
+//#include "user_config.h"
 
 #include <c_types.h>
 
 
 //functions
 void ICACHE_FLASH_ATTR wifi_init(void);
-#ifdef DEBUG_SOFTAP
-	void ICACHE_FLASH_ATTR print_wifi_softap_info(void);
-#endif
 
 
 

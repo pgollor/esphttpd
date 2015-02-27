@@ -18,7 +18,7 @@
 
 
 /// this enables encryption for esp8266 as access point
-#define SOFTAP_ENCRYPT
+//#define SOFTAP_ENCRYPT
 
 
 #ifdef SOFTAP_ENCRYPT
@@ -33,6 +33,9 @@
  * @{
  */
 #define DEBUG_SOFTAP
+
+// debug over Hardware UART
+#define DEBUG_UART_HW
 
 /**
  * @}

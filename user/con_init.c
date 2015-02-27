@@ -80,18 +80,9 @@ void ICACHE_FLASH_ATTR wifi_init(void)
 	// start server
 	//wifi_softap_dhcps_start();
 	/// @}
-}
-
-
-#ifdef DEBUG_SOFTAP
-void ICACHE_FLASH_ATTR print_wifi_softap_info(void)
-{
-	struct softap_config config;
-
-	// get config
-	wifi_softap_get_config(&config);
 
 	// print config
+#ifdef DEBUG_SOFTAP
 	os_printf(PRINTF_LINEENDING "---------- softAP info ----------" PRINTF_LINEENDING);
 	os_printf("ssid: %s" PRINTF_LINEENDING, config.ssid);
 	os_printf("channel: %d" PRINTF_LINEENDING, config.channel);
@@ -123,5 +114,6 @@ void ICACHE_FLASH_ATTR print_wifi_softap_info(void)
 	}
 
 	os_printf("---------- softAP info ----------" PRINTF_LINEENDING);
-}
 #endif
+}
+

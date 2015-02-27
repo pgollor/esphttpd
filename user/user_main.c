@@ -23,7 +23,8 @@
 #include "httpdespfs.h"
 #include "cgi.h"
 #include "cgiwifi.h"
-#include "stdout.h"
+//#include "stdout.h"
+#include <uart.h>
 #include "auth.h"
 #include "con_init.h"
 
@@ -84,8 +85,9 @@ HttpdBuiltInUrl builtInUrls[]={
  * @brief Main routine. Initialize stdout, the I/O and the webserver and we're done.
  */
 void user_init(void) {
-	// init uart as stdout
-	stdoutInit();
+	// init uart
+	//stdoutInit(); // do not use primitve uart output
+	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 
 	// init wifi connection
 	wifi_init();
@@ -98,8 +100,4 @@ void user_init(void) {
 
 	// output to uart
 	os_printf("\nReady fo evertything on port 80.\n");
-
-#ifdef DEBUG_SOFTAP
-	print_wifi_softap_info();
-#endif
 }
