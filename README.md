@@ -31,13 +31,16 @@ git submodule update</pre>
 # Makefile
 In der Makefile wird die Variable "ESPRESSIF_ROOT" (bei mir „/usr/local“) verwendet die man in der Datei "Makefile.uservars" anlegen muss. Dort ist der Pfad anzugeben in dem das esp-open-sdk liegt.
 <br>
-Anschließend kann das Programm mit „make“ compiliert werden.
+Anschließend kann das Programm mit
+<pr>make</pre>
+compiliert werden.
 
 # flashen
 Zum flashen benutze ich ein FTDI Chip der zwei Vorteile gegenüber anderen USB zu UART Adapter besitzt. Der erste ist, dass die UART Seite des FTDI auch mir 3,3V laufen kann und somit kein Pegelwandler benötigt wird.<br>
 Der andere Vorteil ist, dass neben den Datenleitungen noch andere zur Verfügung stehen die genutzt werden können um GPIO2 und CH_PD zu beschalten. Dies wird vom exptool.py direkt unterstützt und somit muss man beim flashen nicht immer Jumper setzen um den Chip in den Boot Modus [4] zu versetzen.
 <br>
 Dazu muss der esp8266 wie unten stehend mit dem FTDI verbunden werden:<br>
+
 <pre>
 -----------
 |         |
@@ -83,6 +86,6 @@ Der größte Teil der Software kommt von:
 - http://www.esp8266.com/viewtopic.php?f=6&t=376
 - http://git.spritesserver.nl/esphttpd.git/
 
-Wenn nicht explizit anders angegeben gillt:
+Wenn nicht explizit anders angegeben gillt:<br>
 Dieses Material steht unter der Creative-Commons-Lizenz Namensnennung 4.0 International. Um eine Kopie dieser Lizenz zu sehen, besuchen Sie http://creativecommons.org/licenses/by/4.0/.
-cc-by Pascal Gollor (http://www.pgollor.de)
+<br>cc-by Pascal Gollor (http://www.pgollor.de)
