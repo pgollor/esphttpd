@@ -48,7 +48,7 @@ Dazu muss der esp8266 wie unten stehend mit dem FTDI verbunden werden:<br>
 | 2 4 6 8 |
 -----------
 Ansicht von oben
-</pre><pre>
+
 1: GND
 2: TXD
 3: GPIO2
