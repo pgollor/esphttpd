@@ -26,8 +26,10 @@ Esphttpd Erstellen
 ==================
 
 Nach dem clonen sollte im repository noch folgendes ausgeführt werden:
-<pre>git submodule init
-git submodule update</pre>
+<pre>
+git submodule init
+git submodule update
+</pre>
 <br>Damit wird sichergestellt, dass alle submodule auch geladen werden.
 
 Makefile
