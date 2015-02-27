@@ -23,6 +23,8 @@ flash as a binary. Also handles the hit counter on the main page.
 #include <ip_addr.h>
 #include "espmissingincludes.h"
 
+#include "user_config.h"
+
 
 //cause I can't be bothered to write an ioGetLed()
 static char currLedState=0;
@@ -33,6 +35,7 @@ static char currLedState=0;
  */
 int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData)
 {
+#ifdef USE_IO
 	int len;
 	char buff[1024];
 
@@ -48,11 +51,11 @@ int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData)
 		currLedState = atoi(buff);
 		ioLed(currLedState); // set led state
 	}
+#endif
 
 	httpdRedirect(connData, "led.tpl");
 	return HTTPD_CGI_DONE;
 }
-
 
 
 /**
@@ -65,14 +68,17 @@ int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData)
  */
 void ICACHE_FLASH_ATTR tplLed(HttpdConnData *connData, char *token, void **arg)
 {
+#ifdef USE_IO
 	char buff[8];
 	uint8 len = 0;
+#endif
 
 	if (token == NULL)
 	{
 		return;
 	}
 
+#ifdef USE_IO
 	// default state is unknown
 	os_strcpy(buff, "Unknown");
 	len = 8;
@@ -94,6 +100,9 @@ void ICACHE_FLASH_ATTR tplLed(HttpdConnData *connData, char *token, void **arg)
 	// send led state to httpd
 	//httpdSend(connData, buff, -1);
 	httpdSend(connData, buff, len);
+#else
+	httpdSend(connData, "Unknown", 8);
+#endif
 }
 
 static long hitCounter=0;

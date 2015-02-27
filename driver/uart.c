@@ -15,7 +15,9 @@
 #include "ets_sys.h"
 #include "osapi.h"
 #include "driver/uart.h"
+
 #include "user_config.h"
+#include "uart_rx_handle.h"
 
 /**
  * @defgroup UART
@@ -26,13 +28,8 @@
  *
  * But for Debugging with this
  */
-#ifdef DEBUG_UART_HW
-	#define UART0   1
-	#define UART1   0
-#else
-	#define UART0   0
-	#define UART1   1
-#endif
+#define UART0   0
+#define UART1   1
 
 // UartDev is defined and initialized in rom code.
 extern UartDevice UartDev;
@@ -151,15 +148,36 @@ uart0_rx_intr_handler(void *para)
         *(pRxBuff->pWritePos) = RcvChar;
 
         // insert here for get one command line from uart
-        if (RcvChar == '\r') {
-            pRxBuff->BuffState = WRITE_OVER;
+        if (RcvChar == '\r')
+        {
+        	/* debug code
+        	for (; pRxBuff->pReadPos < pRxBuff->pWritePos; pRxBuff->pReadPos++)
+        	{
+        		os_printf("%c", *(pRxBuff->pReadPos));
+        	}
+        	os_printf(PRINTF_LINEENDING);
+        	*/
+            //pRxBuff->BuffState = WRITE_OVER;  // whats this???
+        	uart_rx_handle(pRxBuff);
+
+        	// reset buffer
+        	pRxBuff->pWritePos = pRxBuff->pRcvMsgBuff;
+            pRxBuff->pReadPos = pRxBuff->pRcvMsgBuff;
+        }
+        else
+        {
+        	pRxBuff->pWritePos++;
         }
 
-        pRxBuff->pWritePos++;
-
-        if (pRxBuff->pWritePos == (pRxBuff->pRcvMsgBuff + RX_BUFF_SIZE)) {
+        // overflow detection
+        if (pRxBuff->pWritePos == (pRxBuff->pRcvMsgBuff + RX_BUFF_SIZE))
+        {
             // overflow ...we may need more error handle here.
-            pRxBuff->pWritePos = pRxBuff->pRcvMsgBuff ;
+        	// reset buffer
+            pRxBuff->pWritePos = pRxBuff->pRcvMsgBuff;
+            pRxBuff->pReadPos = pRxBuff->pRcvMsgBuff;
+
+            os_printf("uart0 rx buffer overflow" PRINTF_LINEENDING);
         }
     }
 }
@@ -195,11 +213,15 @@ uart_init(UartBautRate uart0_br, UartBautRate uart1_br)
     // rom use 74880 baut_rate, here reinitialize
     UartDev.baut_rate = uart0_br;
     uart_config(UART0);
+#if DEBUG_UART == 1
     UartDev.baut_rate = uart1_br;
     uart_config(UART1);
+#endif
     ETS_UART_INTR_ENABLE();
 
     // install uart1 putc callback
+#if DEBUG_UART == 1
     os_install_putc1((void *)uart1_write_char);
+#endif
 }
 

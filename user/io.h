@@ -17,11 +17,27 @@
 
 
 #include "c_types.h"
+#include "eagle_soc.h"
 
 
 // definitions
-#define LEDGPIO 2
-#define BTNGPIO 0
+/**
+ * @defgroup LED pin
+ * @{
+ */
+#define LED_GPIO            2
+#define LED_FUNC_GPIO       FUNC_GPIO2
+#define LED_PERIPHS_IO_MUX  PERIPHS_IO_MUX_GPIO2_U
+/// @}
+
+/**
+ * @defgroup Button pin
+ * @{
+ */
+#define BTN_GPIO            0
+#define BTN_FUNC_GPIO       FUNC_GPIO0
+#define BTN_PERIPHS_IO_MUX  PERIPHS_IO_MUX_GPIO0_U
+/// @}
 
 // functions
 void ICACHE_FLASH_ATTR ioLed(int ena);

@@ -19,7 +19,9 @@
 #include "ets_sys.h"
 #include "osapi.h"
 #include "httpd.h"
-#include "io.h"
+#ifdef USE_IO
+	#include "io.h"
+#endif
 #include "httpdespfs.h"
 #include "cgi.h"
 #include "cgiwifi.h"
@@ -93,7 +95,9 @@ void user_init(void) {
 	wifi_init();
 	
 	// init GPIO
+#ifdef USE_IO
 	ioInit();
+#endif
 
 	// init connection for tcp port 80
 	httpdInit(builtInUrls, 80);

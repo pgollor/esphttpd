@@ -13,6 +13,10 @@
 #define __USER_CONFIG_H__
 
 
+/**
+ * @defgroup softAP definitions
+ * @{
+ */
 /// name of esp8266 access point
 #define SOFTAP_SSID "microWifi"
 
@@ -25,6 +29,10 @@
 	/// SoftAP password
 	#define SOFTAP_PASSWORD "foofoofoo123"
 #endif
+/// @}
+
+/// use IO functions (actually GPIO0 and GPIO2)
+//#define USE_IO
 
 
 /**
@@ -34,8 +42,16 @@
  */
 #define DEBUG_SOFTAP
 
-// debug over Hardware UART
-#define DEBUG_UART_HW
+/**
+ * @brief select UART for debugging
+ *
+ * 0: TX and RX PIN
+ * 1: GPIO2 as TX Pin
+ *
+ * If you use GPIO2 as debugging UART then you are not able to use this as GPIO pin.
+ * You have do disable all GPIO usage for GPIO2.
+ */
+#define DEBUG_UART 1
 
 /**
  * @}
@@ -44,6 +60,7 @@
 
 /// os_printf line ending
 #define PRINTF_LINEENDING "\n"
+
 
 
 #endif // __USER_CONFIG_H__

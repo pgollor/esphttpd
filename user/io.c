@@ -21,6 +21,7 @@
 #include "gpio.h"
 #include "espmissingincludes.h"
 
+#ifdef USE_IO
 
 static ETSTimer resetBtntimer;
 
@@ -31,14 +32,14 @@ static ETSTimer resetBtntimer;
  */
 void ICACHE_FLASH_ATTR ioLed(int ena)
 {
-	//gpio_output_set is overkill. ToDo: use better mactos
+	//gpio_output_set is overkill. ToDo: use better macros
 	if (ena)
 	{
-		gpio_output_set((1<<LEDGPIO), 0, (1<<LEDGPIO), 0);
+		gpio_output_set((1<<LED_GPIO), 0, (1<<LED_GPIO), 0);
 	}
 	else
 	{
-		gpio_output_set(0, (1<<LEDGPIO), (1<<LEDGPIO), 0);
+		gpio_output_set(0, (1<<LED_GPIO), (1<<LED_GPIO), 0);
 	}
 }
 
@@ -51,7 +52,7 @@ static void ICACHE_FLASH_ATTR resetBtnTimerCb(void *arg)
 {
 	static int resetCnt = 0;
 
-	if (!GPIO_INPUT_GET(BTNGPIO))
+	if (!GPIO_INPUT_GET(BTN_GPIO))
 	{
 		resetCnt++;
 	}
@@ -75,10 +76,10 @@ static void ICACHE_FLASH_ATTR resetBtnTimerCb(void *arg)
  */
 void ioInit()
 {
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2); // enable GPIO2
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO0_U, FUNC_GPIO0); // enable GPIO0
+	PIN_FUNC_SELECT(LED_PERIPHS_IO_MUX, LED_FUNC_GPIO); // enable LED GPIO
+	PIN_FUNC_SELECT(BTN_PERIPHS_IO_MUX, BTN_FUNC_GPIO); // enable button GPIO
 
-	gpio_output_set(0, 0, (1 << LEDGPIO), (1 << BTNGPIO));
+	gpio_output_set(0, 0, (1 << LED_GPIO), (1 << BTN_GPIO));
 
 	// init timer for reading gpio state
 	os_timer_disarm(&resetBtntimer);
@@ -86,3 +87,4 @@ void ioInit()
 	os_timer_arm(&resetBtntimer, 500, 1);
 }
 
+#endif
