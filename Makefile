@@ -122,11 +122,11 @@ endef
 
 all: checkdirs $(TARGET_OUT) $(FW_FILE_1) $(FW_FILE_2)
 
-$(FW_FILE_1): $(TARGET_OUT) firmware
+$(FW_FILE_1): $(TARGET_OUT) $(FW_BASE)
 	$(vecho) "FW $@"
 	$(Q) $(ESPTOOL) -eo $(TARGET_OUT) $(FW_FILE_1_ARGS)
 
-$(FW_FILE_2): $(TARGET_OUT) firmware
+$(FW_FILE_2): $(TARGET_OUT) $(FW_BASE)
 	$(vecho) "FW $@"
 	$(Q) $(ESPTOOL) -eo $(TARGET_OUT) $(FW_FILE_2_ARGS)
 
@@ -143,14 +143,14 @@ checkdirs: $(BUILD_DIR) $(FW_BASE)
 $(BUILD_DIR):
 	$(Q) mkdir -p $@
 
-firmware:
+$(FW_BASE):
 	$(Q) mkdir -p $@
 
 flash: $(FW_FILE_1) $(FW_FILE_2)
-	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x00000 firmware/0x00000.bin
+	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x00000 $(FW_BASE)/0x00000.bin
 	$(Q) [ $(ESPDELAY) -ne 0 ] && echo "Please put the ESP in bootloader mode..." || true
 	$(Q) sleep $(ESPDELAY) || true
-	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x40000 firmware/0x40000.bin
+	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x40000 $(FW_BASE)/0x40000.bin
 
 webpages.espfs: html/ html/wifi/ mkespfsimage/mkespfsimage
 	cd html; find | ../mkespfsimage/mkespfsimage > ../webpages.espfs; cd ..
