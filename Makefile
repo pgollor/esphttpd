@@ -147,10 +147,10 @@ $(FW_BASE):
 	$(Q) mkdir -p $@
 
 flash: $(FW_FILE_1) $(FW_FILE_2)
-	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x00000 $(FW_BASE)/0x00000.bin
+	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x00000 $(FW_FILE_1)
 	$(Q) [ $(ESPDELAY) -ne 0 ] && echo "Please put the ESP in bootloader mode..." || true
 	$(Q) sleep $(ESPDELAY) || true
-	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x40000 $(FW_BASE)/0x40000.bin
+	$(Q) $(ESPTOOL_PY) --port $(ESPPORT) --baud $(ESPBAUD) write_flash 0x40000 $(FW_FILE_2)
 
 webpages.espfs: html/ html/wifi/ mkespfsimage/mkespfsimage
 	cd html; find | ../mkespfsimage/mkespfsimage > ../webpages.espfs; cd ..
