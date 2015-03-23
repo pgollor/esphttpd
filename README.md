@@ -36,6 +36,10 @@ Makefile
 --------
 
 In der Makefile wird die Variable "ESPRESSIF_ROOT" (bei mir „/usr/local“) verwendet die man in der Datei "Makefile.uservars" anlegen muss. Dort ist der Pfad anzugeben in dem das esp-open-sdk liegt.
+Z.B. mit dem Befehl:
+<br>
+<pre>echo "ESPRESSIF_ROOT = /usr/local" > Makefile.uservars</pre>
+Oder einem Editor eurer wahl.
 <br>
 Anschließend kann das Programm mit
 <pre>make</pre>
